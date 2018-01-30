@@ -5,6 +5,10 @@
 [![License](https://img.shields.io/cocoapods/l/AppStartTime.svg?style=flat)](http://cocoapods.org/pods/AppStartTime)
 [![Platform](https://img.shields.io/cocoapods/p/AppStartTime.svg?style=flat)](http://cocoapods.org/pods/AppStartTime)
 
+## Reference 
+[Joy_HookLoad](https://github.com/joy0304/Joy-Demo/tree/master/HookLoad)
+[everettjf_HookCppInitilizers](https://github.com/everettjf/Yolo/tree/master/HookCppInitilizers)
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
