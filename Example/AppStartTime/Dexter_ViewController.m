@@ -7,6 +7,7 @@
 //
 
 #import "Dexter_ViewController.h"
+#import "HMDLoadTracker.h"
 
 @interface Dexter_ViewController ()
 
@@ -14,10 +15,25 @@
 
 @implementation Dexter_ViewController
 
+//+ (void)load {
+//  
+//}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  NSLog(@"%f", app_load_to_didFinshLaunch_time);
+  [objc_load_infos enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSLog(@"%@", obj);
+    NSLog(@"%f", ((NSNumber *)(obj[@"interval_second"])).floatValue);
+  }];
+  NSLog(@"%@", cpp_init_infos);
+
 }
 
 - (void)didReceiveMemoryWarning

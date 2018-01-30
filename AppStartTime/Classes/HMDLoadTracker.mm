@@ -24,17 +24,17 @@ extern "C" {
 
 #pragma mark CppInitialize Time
 
-static NSMutableArray *sInitInfos;
+NSMutableArray *cpp_init_infos;
 static NSTimeInterval sSumInitTime;
 
 extern "C"
 const char* getallinitinfo(){
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    [sInitInfos addObject:[NSString stringWithFormat:@"SumInitTime=%@",@(sSumInitTime)]];
+    [cpp_init_infos addObject:[NSString stringWithFormat:@"SumInitTime=%@",@(sSumInitTime)]];
   });
   
-  NSString *msg = [NSString stringWithFormat:@"%@",sInitInfos];
+  NSString *msg = [NSString stringWithFormat:@"%@",cpp_init_infos];
   return msg.UTF8String;
 }
 
@@ -76,7 +76,7 @@ void myInitFunc_Initializer(int argc, const char* argv[], const char* envp[], co
   CFTimeInterval end = CFAbsoluteTimeGetCurrent();
   sSumInitTime += 1000.0 * (end-start);
   NSString *cost = [NSString stringWithFormat:@"%p=%@",func,@(1000.0*(end - start))];
-  [sInitInfos addObject:cost];
+  [cpp_init_infos addObject:cost];
 }
 
 static void hookModInitFunc(){
@@ -101,13 +101,13 @@ static void hookModInitFunc(){
   
   NSLog(@"zero mod init func : size = %@",@(size));
   
-  [sInitInfos addObject:[NSString stringWithFormat:@"ASLR=%p",mhp]];
+  [cpp_init_infos addObject:[NSString stringWithFormat:@"ASLR=%p",mhp]];
   g_aslr = (MemoryType)mhp;
 }
 
 #pragma mark OC Load Time
 
-NSTimeInterval app_start_time;
+NSTimeInterval app_load_to_didFinshLaunch_time;
 static uint64_t loadTime;
 static uint64_t applicationRespondedTime = -1;
 static mach_timebase_info_data_t timebaseInfo;
@@ -117,6 +117,10 @@ static inline NSTimeInterval MachTimeToSeconds(uint64_t machTime) {
 }
 
 
+unsigned int cls_count;
+const char **classes;
+
+NSMutableArray *objc_load_infos;
 
 @implementation HMDLoadTracker
 
@@ -131,7 +135,7 @@ static inline NSTimeInterval MachTimeToSeconds(uint64_t machTime) {
                                                         usingBlock:^(NSNotification *note) {
                                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                             applicationRespondedTime = mach_absolute_time();
-                                                            app_start_time =  MachTimeToSeconds(applicationRespondedTime - loadTime);
+                                                            app_load_to_didFinshLaunch_time =  MachTimeToSeconds(applicationRespondedTime - loadTime);
 
                                                           });
                                                           [[NSNotificationCenter defaultCenter] removeObserver:obs];
@@ -139,13 +143,72 @@ static inline NSTimeInterval MachTimeToSeconds(uint64_t machTime) {
   }
 
   
+  objc_load_infos = [[NSMutableArray alloc] init];
+  
+  int imageCount = (int)_dyld_image_count();
+  
+  for(int iImg = 0; iImg < imageCount; iImg++) {
+    
+    const char* path = _dyld_get_image_name((unsigned)iImg);
+    NSString *imagePath = [NSString stringWithUTF8String:path];
+    
+    NSBundle* mainBundle = [NSBundle mainBundle];
+    NSString* bundlePath = [mainBundle bundlePath];
+    
+    if ([imagePath containsString:bundlePath] && ![imagePath containsString:@".dylib"]) {
+      classes = objc_copyClassNamesForImage(path, &cls_count);
+      
+      for (int i = 0; i < cls_count; i++) {
+        NSString *className = [NSString stringWithCString:classes[i] encoding:NSUTF8StringEncoding];
+        if (![className isEqualToString:@""] && className) {
+          Class cls = object_getClass(NSClassFromString(className));
+          
+          SEL originalSelector = @selector(load);
+          SEL swizzledSelector = @selector(LDAPM_Load);
+          
+          Method originalMethod = class_getClassMethod(cls, originalSelector);
+          Method swizzledMethod = class_getClassMethod([self class], swizzledSelector);
+          
+          BOOL hasMethod = class_addMethod(cls, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));
+          
+          if (!hasMethod) {
+            BOOL didAddMethod = class_addMethod(cls,
+                                                swizzledSelector,
+                                                method_getImplementation(swizzledMethod),
+                                                method_getTypeEncoding(swizzledMethod));
+            
+            if (didAddMethod) {
+              swizzledMethod = class_getClassMethod(cls, swizzledSelector);
+              
+              method_exchangeImplementations(originalMethod, swizzledMethod);
+            }
+          }
+          
+        }
+      }
+    }
+  }
   // after load
   // initializer
-  sInitInfos = [NSMutableArray new];
+  cpp_init_infos = [NSMutableArray new];
   g_initializer = new std::vector<MemoryType>();
   g_cur_index = -1;
   g_aslr = 0;
   hookModInitFunc();
   
+}
+
++ (void)LDAPM_Load {
+  
+  CFAbsoluteTime start = mach_absolute_time();
+  [self LDAPM_Load];
+  CFAbsoluteTime end = mach_absolute_time();
+  NSDictionary *infoDic = @{@"st":@(start),
+                            @"et":@(end),
+                            @"interval_second":@(MachTimeToSeconds(end - start)),
+                            @"name":NSStringFromClass([self class])
+                            };
+  
+  [objc_load_infos addObject:infoDic];
 }
 @end

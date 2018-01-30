@@ -4,9 +4,16 @@
 //
 
 #import <Foundation/Foundation.h>
-extern NSMutableArray *_loadInfoArray;
-extern NSTimeInterval app_start_time;
-
+/**
+ NSDictionary *infoDic = @{@"st":@(start),
+ @"et":@(end),
+ @"interval_second":@(MachTimeToSeconds(end - start)),
+ @"name":NSStringFromClass([self class])
+ };
+ */
+extern NSMutableArray *objc_load_infos;
+extern NSTimeInterval app_load_to_didFinshLaunch_time;
+extern NSMutableArray *cpp_init_infos;
 
 @interface HMDLoadTracker : NSObject
 
