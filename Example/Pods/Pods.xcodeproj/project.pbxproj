@@ -13,8 +13,8 @@
 		538182FD95BF282E66D233E62CD6D2EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		7BCC99FF34BC7C3EE9471613789CC7D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		805F7E13382E9AB4BB0D5570EE89B922 /* AppStartTime-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D51F8BF998EC382E9FEAF1B041659446 /* AppStartTime-dummy.m */; };
-		9FB3EA8420204FAE007ECA8B /* HMDLoadTracker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FB3EA8220204FAE007ECA8B /* HMDLoadTracker.mm */; };
-		9FB3EA8520204FAE007ECA8B /* HMDLoadTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FB3EA8320204FAE007ECA8B /* HMDLoadTracker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9FB3EA8420204FAE007ECA8B /* AppStartTracker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FB3EA8220204FAE007ECA8B /* AppStartTracker.mm */; };
+		9FB3EA8520204FAE007ECA8B /* AppStartTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FB3EA8320204FAE007ECA8B /* AppStartTracker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A2C7A2B2891A93D956CE6CC9AE49F2CA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		AD38DB50C494A69689EBA2E7A2981F2D /* Pods-AppStartTime_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BBC3261430F513CD02340767B105291B /* Pods-AppStartTime_Example-dummy.m */; };
 		AE8878CFF55918D0D2D15A8ABB8CF18E /* AppStartTime-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 112515B2645F06CF3AC5C2730686B57B /* AppStartTime-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -50,8 +50,8 @@
 		91CBABF4E47A7EAEDA14E3EED6A674E4 /* Pods-AppStartTime_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-AppStartTime_Example.modulemap"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		963F1CC5E661B2ACC194A38F8ED55D19 /* Pods-AppStartTime_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AppStartTime_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		9FB3EA8220204FAE007ECA8B /* HMDLoadTracker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = HMDLoadTracker.mm; path = AppStartTime/Classes/HMDLoadTracker.mm; sourceTree = "<group>"; };
-		9FB3EA8320204FAE007ECA8B /* HMDLoadTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HMDLoadTracker.h; path = AppStartTime/Classes/HMDLoadTracker.h; sourceTree = "<group>"; };
+		9FB3EA8220204FAE007ECA8B /* AppStartTracker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppStartTracker.mm; path = AppStartTime/Classes/AppStartTracker.mm; sourceTree = "<group>"; };
+		9FB3EA8320204FAE007ECA8B /* AppStartTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppStartTracker.h; path = AppStartTime/Classes/AppStartTracker.h; sourceTree = "<group>"; };
 		A119CD966E2A37559344F4DFEAA4CE26 /* AppStartTime.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AppStartTime.xcconfig; sourceTree = "<group>"; };
 		AA88FA7EF7957F4325D9DF2750FA55FE /* Pods-AppStartTime_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AppStartTime_Tests-umbrella.h"; sourceTree = "<group>"; };
 		AC5198C9602F60B17376DA1ABE143389 /* Pods-AppStartTime_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AppStartTime_Tests-dummy.m"; sourceTree = "<group>"; };
@@ -201,8 +201,8 @@
 		F77797E7B0D74AB842973FE90CB95EB0 /* AppStartTime */ = {
 			isa = PBXGroup;
 			children = (
-				9FB3EA8320204FAE007ECA8B /* HMDLoadTracker.h */,
-				9FB3EA8220204FAE007ECA8B /* HMDLoadTracker.mm */,
+				9FB3EA8320204FAE007ECA8B /* AppStartTracker.h */,
+				9FB3EA8220204FAE007ECA8B /* AppStartTracker.mm */,
 				0AF953A90C0567025FD56BA1EF2B6057 /* Support Files */,
 			);
 			name = AppStartTime;
@@ -217,7 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE8878CFF55918D0D2D15A8ABB8CF18E /* AppStartTime-umbrella.h in Headers */,
-				9FB3EA8520204FAE007ECA8B /* HMDLoadTracker.h in Headers */,
+				9FB3EA8520204FAE007ECA8B /* AppStartTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,7 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				805F7E13382E9AB4BB0D5570EE89B922 /* AppStartTime-dummy.m in Sources */,
-				9FB3EA8420204FAE007ECA8B /* HMDLoadTracker.mm in Sources */,
+				9FB3EA8420204FAE007ECA8B /* AppStartTracker.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

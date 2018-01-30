@@ -7,7 +7,7 @@
 //
 
 #import "Dexter_ViewController.h"
-#import "HMDLoadTracker.h"
+#import "AppStartTracker.h"
 
 @interface Dexter_ViewController ()
 

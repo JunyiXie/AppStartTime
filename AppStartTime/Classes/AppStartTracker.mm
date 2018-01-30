@@ -3,7 +3,7 @@
 //  Created by 谢俊逸 on 30/1/2018.
 //
 
-#import "HMDLoadTracker.h"
+#import "AppLoadTracker.h"
 #import <mach-o/dyld.h>
 #import <mach-o/loader.h>
 #import <mach-o/nlist.h>
@@ -65,7 +65,6 @@ struct MyProgramVars
 typedef void (*OriginalInitializer)(int argc, const char* argv[], const char* envp[], const char* apple[], const MyProgramVars* vars);
 
 void myInitFunc_Initializer(int argc, const char* argv[], const char* envp[], const char* apple[], const struct MyProgramVars* vars){
-  printf("my init func\n");
   ++g_cur_index;
   OriginalInitializer func = (OriginalInitializer)g_initializer->at(g_cur_index);
   
@@ -98,9 +97,6 @@ static void hookModInitFunc(){
     g_initializer->push_back(original_ptr);
     memory[idx] = (MemoryType)myInitFunc_Initializer;
   }
-  
-  NSLog(@"zero mod init func : size = %@",@(size));
-  
   [cpp_init_infos addObject:[NSString stringWithFormat:@"ASLR=%p",mhp]];
   g_aslr = (MemoryType)mhp;
 }
