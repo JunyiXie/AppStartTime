@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <mach-o/getsect.h>
 #import <objc/message.h>
+#include <mach/mach_time.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -107,69 +108,36 @@ static void hookModInitFunc(){
 #pragma mark OC Load Time
 
 
+static uint64_t loadTime;
+static uint64_t applicationRespondedTime = -1;
+static mach_timebase_info_data_t timebaseInfo;
+
+static inline NSTimeInterval MachTimeToSeconds(uint64_t machTime) {
+  return ((machTime / 1e9) * timebaseInfo.numer) / timebaseInfo.denom;
+}
 
 
-#define TIMESTAMP_NUMBER(interval)  [NSNumber numberWithLongLong:interval*1000*1000]
-
-
-
-unsigned int load_cls_count;
-const char **classes;
-
-NSMutableArray *_loadInfoArray;
 
 @implementation HMDLoadTracker
 
+/*
 + (void)load {
-  
-  _loadInfoArray = [[NSMutableArray alloc] init];
-  
-  CFAbsoluteTime time1 =CFAbsoluteTimeGetCurrent();
-  
-  int imageCount = (int)_dyld_image_count();
-  
-  for(int iImg = 0; iImg < imageCount; iImg++) {
-    
-    const char* path = _dyld_get_image_name((unsigned)iImg);
-    NSString *imagePath = [NSString stringWithUTF8String:path];
-    
-    NSBundle* mainBundle = [NSBundle mainBundle];
-    NSString* bundlePath = [mainBundle bundlePath];
-    
-    if ([imagePath containsString:bundlePath] && ![imagePath containsString:@".dylib"]) {
-      classes = objc_copyClassNamesForImage(path, &load_cls_count);
-      
-      for (int i = 0; i < load_cls_count; i++) {
-        NSString *className = [NSString stringWithCString:classes[i] encoding:NSUTF8StringEncoding];
-        if (![className isEqualToString:@""] && className) {
-          Class cls = object_getClass(NSClassFromString(className));
-          
-          SEL originalSelector = @selector(load);
-          SEL swizzledSelector = @selector(LDAPM_Load);
-          
-          Method originalMethod = class_getClassMethod(cls, originalSelector);
-          Method swizzledMethod = class_getClassMethod(cls, swizzledSelector);
-          
-          BOOL didAddMethod = class_addMethod(cls, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));
-          
-          if (didAddMethod) {
-            class_replaceMethod(cls, @selector(LDAPM_Load), method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
-            
-          } else {
-            swizzledMethod = class_getClassMethod(cls, swizzledSelector);
-            method_exchangeImplementations(originalMethod, swizzledMethod);
-          }
-          
-        }
-      }
-    }
 
+  loadTime = mach_absolute_time();
+  mach_timebase_info(&timebaseInfo);
+  @autoreleasepool {
+    __block id obs;
+    obs = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification
+                                                            object:nil queue:nil
+                                                        usingBlock:^(NSNotification *note) {
+                                                          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                                            applicationRespondedTime = mach_absolute_time();
+                                                            NSLog(@"App_Start_Time: %llu", (applicationRespondedTime - loadTime));
+                                                          });
+                                                          [[NSNotificationCenter defaultCenter] removeObserver:obs];
+                                                        }];
   }
-  
-  CFAbsoluteTime time2 =CFAbsoluteTimeGetCurrent();
-  
-//  NSLog(@"Hook Time:%f",(time2 - time1));
-  
+
   
   // after load
   // initializer
@@ -180,20 +148,5 @@ NSMutableArray *_loadInfoArray;
   hookModInitFunc();
   
 }
-+ (void)LDAPM_Load {
-  
-  CFAbsoluteTime start =CFAbsoluteTimeGetCurrent();
-  
-  [self LDAPM_Load];
-  
-  CFAbsoluteTime end =CFAbsoluteTimeGetCurrent();
-  // 时间精度 us
-  NSDictionary *infoDic = @{@"st":TIMESTAMP_NUMBER(start),
-                            @"et":TIMESTAMP_NUMBER(end),
-                            @"name":NSStringFromClass([self class])
-                            };
-  [_loadInfoArray addObject:infoDic];
-}
-
-
+ */
 @end
