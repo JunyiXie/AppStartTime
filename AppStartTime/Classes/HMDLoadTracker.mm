@@ -107,7 +107,7 @@ static void hookModInitFunc(){
 
 #pragma mark OC Load Time
 
-
+NSTimeInterval app_start_time;
 static uint64_t loadTime;
 static uint64_t applicationRespondedTime = -1;
 static mach_timebase_info_data_t timebaseInfo;
@@ -120,7 +120,6 @@ static inline NSTimeInterval MachTimeToSeconds(uint64_t machTime) {
 
 @implementation HMDLoadTracker
 
-/*
 + (void)load {
 
   loadTime = mach_absolute_time();
@@ -132,7 +131,8 @@ static inline NSTimeInterval MachTimeToSeconds(uint64_t machTime) {
                                                         usingBlock:^(NSNotification *note) {
                                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                             applicationRespondedTime = mach_absolute_time();
-                                                            NSLog(@"App_Start_Time: %llu", (applicationRespondedTime - loadTime));
+                                                            app_start_time =  MachTimeToSeconds(applicationRespondedTime - loadTime);
+
                                                           });
                                                           [[NSNotificationCenter defaultCenter] removeObserver:obs];
                                                         }];
@@ -148,5 +148,4 @@ static inline NSTimeInterval MachTimeToSeconds(uint64_t machTime) {
   hookModInitFunc();
   
 }
- */
 @end

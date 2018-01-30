@@ -5,6 +5,7 @@
 
 #import <Foundation/Foundation.h>
 extern NSMutableArray *_loadInfoArray;
+extern NSTimeInterval app_start_time;
 
 
 @interface HMDLoadTracker : NSObject
