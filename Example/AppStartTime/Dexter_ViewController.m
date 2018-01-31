@@ -9,6 +9,7 @@
 #import "Dexter_ViewController.h"
 #import "AppStartTracker.h"
 
+
 @interface Dexter_ViewController ()
 
 @end
@@ -31,6 +32,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
+  test_standard_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - test_standard_load_to_first_rendered_time;
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,6 +42,7 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-  NSLog(@"%lu", from_load_to_first_rendered_time);
+  NSLog(@" from_load_to_first_rendered_time %f", from_load_to_first_rendered_time);
+  NSLog(@" test_standard_load_to_first_rendered_time %f", test_standard_load_to_first_rendered_time);
 }
 @end
