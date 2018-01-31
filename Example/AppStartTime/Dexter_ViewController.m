@@ -31,13 +31,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
-  NSLog(@"%f", app_load_to_didFinshLaunch_time);
-  [objc_load_infos enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-    NSLog(@"%@", obj);
-    NSLog(@"%f", ((NSNumber *)(obj[@"interval_second"])).floatValue);
-  }];
-  NSLog(@"%@", cpp_init_infos);
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,4 +39,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+  NSLog(@"%lu", from_load_to_first_rendered_time);
+}
 @end

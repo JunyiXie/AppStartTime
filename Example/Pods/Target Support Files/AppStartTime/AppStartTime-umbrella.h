@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "AppStartTracker.h"
 
 FOUNDATION_EXPORT double AppStartTimeVersionNumber;
 FOUNDATION_EXPORT const unsigned char AppStartTimeVersionString[];

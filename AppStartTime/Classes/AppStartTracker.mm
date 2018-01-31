@@ -21,6 +21,7 @@ extern "C" {
 }
 #endif
 
+CFTimeInterval from_load_to_first_rendered_time;
 
 
 #pragma mark CppInitialize Time
@@ -39,6 +40,14 @@ const char* getallinitinfo(){
   
   NSString *msg = [NSString stringWithFormat:@"%@",cpp_init_infos];
   return msg.UTF8String;
+}
+extern "C"
+#pragma mark From Load to main time
+void monitorFromLoadToFirstRenderedTime(void)
+{
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
+  });
 }
 
 
@@ -152,6 +161,7 @@ NSMutableArray *objc_load_infos;
 @implementation HMDLoadTracker
 
 + (void)load {
+  from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
 
   loadTime = mach_absolute_time();
   mach_timebase_info(&timebaseInfo);
@@ -238,4 +248,10 @@ NSMutableArray *objc_load_infos;
   
   [objc_load_infos addObject:infoDic];
 }
+
+
+
+
+
 @end
+
