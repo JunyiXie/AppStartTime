@@ -5,13 +5,36 @@
 //  Created by junyixie on 01/30/2018.
 //  Copyright (c) 2018 junyixie. All rights reserved.
 //
+#define TIMESTAMP_NUMBER(interval)  [NSNumber numberWithLongLong:interval*1000*1000]
 
+extern CFTimeInterval time_main_to_firstRendering;
 #import "Dexter_AppDelegate.h"
-
+static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    CFTimeInterval tem = CFAbsoluteTimeGetCurrent();
+    time_main_to_firstRendering = tem - time_main_to_firstRendering;
+    NSLog(@"time");
+  });
+}
 @implementation Dexter_AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    CFRunLoopRef runloop = CFRunLoopGetMain();
+    CFRunLoopObserverRef observer;
+    
+    observer = CFRunLoopObserverCreate(CFAllocatorGetDefault(),
+                                       kCFRunLoopBeforeWaiting
+                                       ,
+                                       true,      // repeat
+                                       0xFFFFFF,  // after CATransaction(2000000)
+                                       YYRunLoopObserverCallBack, NULL);
+    CFRunLoopAddObserver(runloop, observer, kCFRunLoopCommonModes);
+    CFRelease(observer);
+  });
     // Override point for customization after application launch.
     return YES;
 }

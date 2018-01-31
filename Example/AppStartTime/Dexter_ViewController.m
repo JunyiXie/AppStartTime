@@ -22,6 +22,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+//  for (int i = 0; i < 1000; i ++) {
+//    NSLog(@"123");
+//  }
+  self.view.backgroundColor = [UIColor redColor];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
