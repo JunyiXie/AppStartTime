@@ -106,11 +106,11 @@ void myInitFunc_Initializer(int argc, const char* argv[], const char* envp[], co
 
 
 #pragma mark Fix
-void test(void) {
+void scanAllMacho(void) {
   uint32_t count = _dyld_image_count();
   for (uint32_t i = 0; i < count; i++) {
     Dl_info info;
-    dladdr((const void *)test, &info);
+    dladdr((const void *)scanAllMacho, &info);
     
 #ifndef __LP64__
     const struct mach_header *mhp = _dyld_get_image_header(i); // both works as below line
@@ -221,7 +221,7 @@ NSMutableArray *objc_load_infos;
   g_initializer = new std::vector<MemoryType>();
   g_cur_index = -1;
   g_aslr = 0;
-  test();
+  scanAllMacho();
   
 }
 
