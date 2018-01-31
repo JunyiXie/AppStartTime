@@ -43,17 +43,48 @@ const char* getallinitinfo(){
   return msg.UTF8String;
 }
 extern "C"
-#pragma mark From Load to main time
-void monitorFromLoadToFirstRenderedTime(void)
 {
-//  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//    from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
-//  });
-  dispatch_async(dispatch_get_main_queue(), ^{
-        from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
+  #pragma mark From Load first rendered time
+  void monitorFromLoadToFirstRenderedTime(void)
+  {
+  //  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+  //    from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
+  //  });
+    dispatch_async(dispatch_get_main_queue(), ^{
+          from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
 
-  });
+    });
+  }
+  static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+      monitorFromLoadToFirstRenderedTime();
+    });
+    
+  }
+
+  void appStartRunloopBeforeWaitCallBack(void)
+  {
+    CFRunLoopRef runloop = CFRunLoopGetMain();
+    CFRunLoopObserverRef observer;
+    
+    observer = CFRunLoopObserverCreate(CFAllocatorGetDefault(),
+                                       kCFRunLoopBeforeWaiting | kCFRunLoopBeforeTimers | kCFRunLoopBeforeSources
+                                       ,
+                                       true,      // repeat
+                                       0xFFFFFF,  // after CATransaction(2000000)
+                                       YYRunLoopObserverCallBack, NULL);
+    CFRunLoopAddObserver(runloop, observer, kCFRunLoopCommonModes);
+    CFRelease(observer);
+  }
+
+  void monitorAppStartFromLoadToFirstRenderedTime(void)
+  {
+    appStartRunloopBeforeWaitCallBack();
+  }
+
 }
+
 
 
 using namespace std;

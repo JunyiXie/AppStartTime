@@ -7,42 +7,13 @@
 //
 #import "Dexter_AppDelegate.h"
 #import "AppStartTracker.h"
-extern void monitorFromLoadToFirstRenderedTime(void);
-static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
-//  static dispatch_once_t onceToken;
-//  dispatch_once(&onceToken, ^{
-  if (activity == kCFRunLoopBeforeSources) {
-    NSLog(@"kCFRunLoopBeforeSources");
-  } else if (activity == kCFRunLoopBeforeTimers) {
-    NSLog(@"kCFRunLoopBeforeTimers");
-  } else if (activity == kCFRunLoopBeforeWaiting) {
-    NSLog(@"kCFRunLoopBeforeWaiting");
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-      monitorFromLoadToFirstRenderedTime();
-    });
-  }
-//  });
-}
+extern void monitorAppStartFromLoadToFirstRenderedTime(void);
+
 @implementation Dexter_AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//  static dispatch_once_t onceToken;
-//  dispatch_once(&onceToken, ^{
-    CFRunLoopRef runloop = CFRunLoopGetMain();
-    CFRunLoopObserverRef observer;
-    
-    observer = CFRunLoopObserverCreate(CFAllocatorGetDefault(),
-                                       kCFRunLoopBeforeWaiting | kCFRunLoopBeforeTimers | kCFRunLoopBeforeSources
-                                       ,
-                                       true,      // repeat
-                                       0xFFFFFF,  // after CATransaction(2000000)
-                                       YYRunLoopObserverCallBack, NULL);
-    CFRunLoopAddObserver(runloop, observer, kCFRunLoopCommonModes);
-    CFRelease(observer);
-//  });
-  
+  monitorAppStartFromLoadToFirstRenderedTime();
     return YES;
 }
 
