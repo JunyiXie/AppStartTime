@@ -22,6 +22,7 @@ extern "C" {
 #endif
 
 CFTimeInterval from_load_to_first_rendered_time;
+CFTimeInterval test_standard_load_to_first_rendered_time;
 
 
 #pragma mark CppInitialize Time
@@ -162,6 +163,7 @@ NSMutableArray *objc_load_infos;
 
 + (void)load {
   from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
+  test_standard_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
 
   loadTime = mach_absolute_time();
   mach_timebase_info(&timebaseInfo);
