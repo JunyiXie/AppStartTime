@@ -23,6 +23,7 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		9F02ED32202373B700122DA7 /* Dexter_DrawRectTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F02ED31202373B700122DA7 /* Dexter_DrawRectTest.m */; };
 		9FB3EA9D2020772C007ECA8B /* Dexter_ViewController+Dexter_testload.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB3EA9C2020772C007ECA8B /* Dexter_ViewController+Dexter_testload.m */; };
 		E5B541DDB4186F65F1A86DD9 /* Pods_AppStartTime_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B68DFB120872F5E5990F5140 /* Pods_AppStartTime_Example.framework */; };
 /* End PBXBuildFile section */
@@ -63,6 +64,8 @@
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		80F2F9706F2FB41CC6D886CB /* Pods-AppStartTime_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppStartTime_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AppStartTime_Tests/Pods-AppStartTime_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9F02ED30202373B700122DA7 /* Dexter_DrawRectTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dexter_DrawRectTest.h; sourceTree = "<group>"; };
+		9F02ED31202373B700122DA7 /* Dexter_DrawRectTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Dexter_DrawRectTest.m; sourceTree = "<group>"; };
 		9FB3EA9B2020772C007ECA8B /* Dexter_ViewController+Dexter_testload.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dexter_ViewController+Dexter_testload.h"; sourceTree = "<group>"; };
 		9FB3EA9C2020772C007ECA8B /* Dexter_ViewController+Dexter_testload.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Dexter_ViewController+Dexter_testload.m"; sourceTree = "<group>"; };
 		A742CBC31946D6F0ED9AEF2F /* AppStartTime.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AppStartTime.podspec; path = ../AppStartTime.podspec; sourceTree = "<group>"; };
@@ -156,6 +159,8 @@
 				6003F594195388D20070C39A /* Supporting Files */,
 				9FB3EA9B2020772C007ECA8B /* Dexter_ViewController+Dexter_testload.h */,
 				9FB3EA9C2020772C007ECA8B /* Dexter_ViewController+Dexter_testload.m */,
+				9F02ED30202373B700122DA7 /* Dexter_DrawRectTest.h */,
+				9F02ED31202373B700122DA7 /* Dexter_DrawRectTest.m */,
 			);
 			name = "Example for AppStartTime";
 			path = AppStartTime;
@@ -409,6 +414,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F59E195388D20070C39A /* Dexter_AppDelegate.m in Sources */,
+				9F02ED32202373B700122DA7 /* Dexter_DrawRectTest.m in Sources */,
 				6003F5A7195388D20070C39A /* Dexter_ViewController.m in Sources */,
 				9FB3EA9D2020772C007ECA8B /* Dexter_ViewController+Dexter_testload.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,

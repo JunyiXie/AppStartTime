@@ -1,5 +1,5 @@
 PODS:
-  - AppStartTime (0.1.3)
+  - AppStartTime (0.1.5)
 
 DEPENDENCIES:
   - AppStartTime (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  AppStartTime: f663d97df06673da0aa12f712f8dc541b9d1588b
+  AppStartTime: bcf8333d7972ec1f28eefb7322e81a97a48f80f3
 
 PODFILE CHECKSUM: 1b8da9f462fb6d3e78e4e0f25bd40d7f8bc131c7
 
