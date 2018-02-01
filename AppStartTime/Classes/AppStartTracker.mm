@@ -50,13 +50,13 @@ extern "C"
   void monitorAppStartTime() {
     test_didfinshlaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
     from_didFinshedLaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
-    
+    from_load_to_didFinshedLaunching_time = CFAbsoluteTimeGetCurrent() - from_load_to_didFinshedLaunching_time;
+
     timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
     dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
     dispatch_source_set_event_handler(timer, ^{
       from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
       from_didFinshedLaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_didFinshedLaunching_to_first_rendered_time;
-      from_load_to_didFinshedLaunching_time = CFAbsoluteTimeGetCurrent() - from_load_to_didFinshedLaunching_time;
       dispatch_suspend(timer);
     });
     dispatch_resume(timer);

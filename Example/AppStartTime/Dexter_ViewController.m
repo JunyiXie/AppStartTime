@@ -60,5 +60,7 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
   NSLog(@" from_load_to_first_rendered_time %f", from_load_to_first_rendered_time);
   NSLog(@" test_standard_load_to_first_rendered_time %f", test_didfinshlaunching_to_first_rendered_time);
+  
+  self.view.backgroundColor = [UIColor whiteColor];
 }
 @end

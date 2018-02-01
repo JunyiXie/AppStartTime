@@ -22,10 +22,6 @@ static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopAc
 @implementation Dexter_AppDelegate
 
 + (void)load {
-
-}
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
   CFRunLoopRef runloop = CFRunLoopGetMain();
   CFRunLoopObserverRef observer;
   
@@ -37,6 +33,10 @@ static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopAc
                                      YYRunLoopObserverCallBack, NULL);
   CFRunLoopAddObserver(runloop, observer, kCFRunLoopCommonModes);
   CFRelease(observer);
+  
+}
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
 
   monitorAppStartTime();
 
