@@ -7,7 +7,7 @@
 //
 #import "Dexter_AppDelegate.h"
 #import "AppStartTracker.h"
-extern void monitorFromLoadToFirstRenderedTime(void);
+extern void monitorAppStartTime(void);
 static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
 //  static dispatch_once_t onceToken;
 //  dispatch_once(&onceToken, ^{
@@ -38,7 +38,7 @@ static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopAc
   CFRunLoopAddObserver(runloop, observer, kCFRunLoopCommonModes);
   CFRelease(observer);
 
-  monitorFromLoadToFirstRenderedTime();
+  monitorAppStartTime();
 
   
   NSLog(@"didFinishLaunchingWithOptions");
