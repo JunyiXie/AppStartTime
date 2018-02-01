@@ -57,7 +57,6 @@ extern "C"
       from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
       from_didFinshedLaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_didFinshedLaunching_to_first_rendered_time;
       from_load_to_didFinshedLaunching_time = CFAbsoluteTimeGetCurrent() - from_load_to_didFinshedLaunching_time;
-      NSLog(@"monitorAppStartTime");
       dispatch_suspend(timer);
     });
     dispatch_resume(timer);
