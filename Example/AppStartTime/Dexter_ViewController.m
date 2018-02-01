@@ -8,7 +8,7 @@
 
 #import "Dexter_ViewController.h"
 #import "AppStartTracker.h"
-
+#import "Dexter_DrawRectTest.h"
 
 @interface Dexter_ViewController ()
 
@@ -26,13 +26,26 @@
 //  for (int i = 0; i < 1000; i ++) {
 //    NSLog(@"123");
 //  }
+  
   self.view.backgroundColor = [UIColor redColor];
-	// Do any additional setup after loading the view, typically from a nib.
+	
+  Dexter_DrawRectTest *view_draw_rect = [[Dexter_DrawRectTest alloc] initWithFrame:CGRectMake(0, 100, 100, 100)];
+  [self.view addSubview: view_draw_rect];
+  NSLog(@"viewdidload");
+  // Do any additional setup after loading the view, typically from a nib.
+}
+
+- (void)viewDidLayoutSubviews {
+  [super viewDidLayoutSubviews];
+  NSLog(@"didlayoutsubviews");
 }
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
   test_standard_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - test_standard_load_to_first_rendered_time;
+  NSLog(@"viewDidAppear");
+//  assert(0);
+
 }
 
 - (void)didReceiveMemoryWarning

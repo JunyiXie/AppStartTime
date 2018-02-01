@@ -21,10 +21,12 @@ extern "C" {
 }
 #endif
 
+// rendered_time == after viewDidAppear: time
 CFTimeInterval from_load_to_first_rendered_time;
+CFTimeInterval from_didFinshedLaunching_to_first_rendered_time;
 CFTimeInterval test_standard_load_to_first_rendered_time;
-
-
+CFTimeInterval from_load_to_didFinshedLaunching_time;
+dispatch_source_t timer;
 #pragma mark CppInitialize Time
 
 
@@ -44,45 +46,17 @@ const char* getallinitinfo(){
 }
 extern "C"
 {
-  #pragma mark From Load first rendered time
-  void monitorFromLoadToFirstRenderedTime(void)
-  {
-  //  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-  //    from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
-  //  });
-    dispatch_async(dispatch_get_main_queue(), ^{
-          from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
-
-    });
-  }
-  static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-      monitorFromLoadToFirstRenderedTime();
-    });
-    
-  }
-
-  void appStartRunloopBeforeWaitCallBack(void)
-  {
-    CFRunLoopRef runloop = CFRunLoopGetMain();
-    CFRunLoopObserverRef observer;
-    
-    observer = CFRunLoopObserverCreate(CFAllocatorGetDefault(),
-                                       kCFRunLoopBeforeWaiting | kCFRunLoopBeforeTimers | kCFRunLoopBeforeSources
-                                       ,
-                                       true,      // repeat
-                                       0xFFFFFF,  // after CATransaction(2000000)
-                                       YYRunLoopObserverCallBack, NULL);
-    CFRunLoopAddObserver(runloop, observer, kCFRunLoopCommonModes);
-    CFRelease(observer);
-  }
-
-  void monitorAppStartFromLoadToFirstRenderedTime(void)
-  {
-    appStartRunloopBeforeWaitCallBack();
-  }
-
+  from_didFinshedLaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
+  
+  timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+  dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
+  dispatch_source_set_event_handler(timer, ^{
+    from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
+    from_didFinshedLaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_didFinshedLaunching_to_first_rendered_time;
+    from_load_to_didFinshedLaunching_time = CFAbsoluteTimeGetCurrent() - from_load_to_didFinshedLaunching_time;
+    dispatch_suspend(timer);
+  });
+  dispatch_resume(timer);
 }
 
 
@@ -199,7 +173,7 @@ NSMutableArray *objc_load_infos;
 + (void)load {
   from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
   test_standard_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
-
+  from_load_to_didFinshedLaunching_time = CFAbsoluteTimeGetCurrent();
   loadTime = mach_absolute_time();
   mach_timebase_info(&timebaseInfo);
   @autoreleasepool {

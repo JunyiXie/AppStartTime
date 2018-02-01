@@ -7,13 +7,46 @@
 //
 #import "Dexter_AppDelegate.h"
 #import "AppStartTracker.h"
-extern void monitorAppStartFromLoadToFirstRenderedTime(void);
-
+extern void monitorFromLoadToFirstRenderedTime(void);
+static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
+//  static dispatch_once_t onceToken;
+//  dispatch_once(&onceToken, ^{
+  if (activity == kCFRunLoopBeforeSources) {
+    NSLog(@"BeforeSources");
+  } else if (activity == kCFRunLoopBeforeTimers) {
+    NSLog(@"BeforeTimers");
+  } else if (activity == kCFRunLoopBeforeWaiting) {
+    NSLog(@"BeforeWaiting");
+  }
+}
 @implementation Dexter_AppDelegate
 
++ (void)load {
+
+}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  monitorAppStartFromLoadToFirstRenderedTime();
+  CFRunLoopRef runloop = CFRunLoopGetMain();
+  CFRunLoopObserverRef observer;
+  
+  observer = CFRunLoopObserverCreate(CFAllocatorGetDefault(),
+                                     kCFRunLoopBeforeWaiting | kCFRunLoopBeforeTimers | kCFRunLoopBeforeSources
+                                     ,
+                                     true,      // repeat
+                                     0xFFFFFF,  // after CATransaction(2000000)
+                                     YYRunLoopObserverCallBack, NULL);
+  CFRunLoopAddObserver(runloop, observer, kCFRunLoopCommonModes);
+  CFRelease(observer);
+
+  monitorFromLoadToFirstRenderedTime();
+
+  
+  NSLog(@"didFinishLaunchingWithOptions");
+//  static dispatch_once_t onceToken;
+//  dispatch_once(&onceToken, ^{
+
+//  });
+  
     return YES;
 }
 

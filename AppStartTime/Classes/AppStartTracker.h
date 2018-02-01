@@ -14,8 +14,14 @@
 extern NSMutableArray *objc_load_infos;
 extern NSTimeInterval app_load_to_didFinshLaunch_time;
 extern NSMutableArray *cpp_init_infos;
+
+// first_rendered_time ≈ viewDidAppear:
 extern CFTimeInterval from_load_to_first_rendered_time;
 extern CFTimeInterval test_standard_load_to_first_rendered_time;
+
+
+extern CFTimeInterval from_didFinshedLaunching_to_first_rendered_time;
+extern CFTimeInterval from_load_to_didFinshedLaunching_time;
 
 @interface HMDLoadTracker : NSObject
 
