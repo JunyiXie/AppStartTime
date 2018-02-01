@@ -37,12 +37,15 @@
 
 - (void)viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
+  for (int i = 0; i < 10000; i ++) {
+    NSLog(@"2333");
+  }
   NSLog(@"didlayoutsubviews");
 }
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
-  test_standard_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - test_standard_load_to_first_rendered_time;
+  test_didfinshlaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - test_didfinshlaunching_to_first_rendered_time;
   NSLog(@"viewDidAppear");
 //  assert(0);
 
@@ -56,6 +59,6 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
   NSLog(@" from_load_to_first_rendered_time %f", from_load_to_first_rendered_time);
-  NSLog(@" test_standard_load_to_first_rendered_time %f", test_standard_load_to_first_rendered_time);
+  NSLog(@" test_standard_load_to_first_rendered_time %f", test_didfinshlaunching_to_first_rendered_time);
 }
 @end
