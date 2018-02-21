@@ -57,6 +57,10 @@ extern "C"
     dispatch_source_set_event_handler(timer, ^{
       from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
       from_didFinshedLaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_didFinshedLaunching_to_first_rendered_time;
+#ifdef DEBUG
+      NSLog(@"AppstartTime 首屏渲染记录");
+#else
+#endif
       dispatch_suspend(timer);
     });
     dispatch_resume(timer);

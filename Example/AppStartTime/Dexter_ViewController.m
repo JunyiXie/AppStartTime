@@ -37,9 +37,6 @@
 
 - (void)viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
-  for (int i = 0; i < 10000; i ++) {
-    NSLog(@"2333");
-  }
   NSLog(@"didlayoutsubviews");
 }
 
@@ -47,7 +44,6 @@
   [super viewDidAppear:animated];
   test_didfinshlaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - test_didfinshlaunching_to_first_rendered_time;
   NSLog(@"viewDidAppear");
-//  assert(0);
 
 }
 
