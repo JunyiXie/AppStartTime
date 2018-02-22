@@ -109,30 +109,6 @@ void myInitFunc_Initializer(int argc, const char* argv[], const char* envp[], co
   [cpp_init_infos addObject:cost];
 }
 
-//static void hookModInitFunc(){
-//  Dl_info info;
-//  dladdr((const void *)hookModInitFunc, &info);
-//
-//#ifndef __LP64__
-//  //        const struct mach_header *mhp = _dyld_get_image_header(0); // both works as below line
-//  const struct mach_header *mhp = (struct mach_header*)info.dli_fbase;
-//  unsigned long size = 0;
-//  MemoryType *memory = (uint32_t*)getsectiondata(mhp, "__DATA", "__mod_init_func", & size);
-//#else /* defined(__LP64__) */
-//  const struct mach_header_64 *mhp = (struct mach_header_64*)info.dli_fbase;
-//  unsigned long size = 0;
-//  MemoryType *memory = (uint64_t*)getsectiondata(mhp, "__DATA", "__mod_init_func", & size);
-//#endif /* defined(__LP64__) */
-//  for(int idx = 0; idx < size/sizeof(void*); ++idx){
-//    MemoryType original_ptr = memory[idx];
-//    g_initializer->push_back(original_ptr);
-//    memory[idx] = (MemoryType)myInitFunc_Initializer;
-//  }
-//  [cpp_init_infos addObject:[NSString stringWithFormat:@"ASLR=%p",mhp]];
-//  g_aslr = (MemoryType)mhp;
-//}
-
-
 #pragma mark Fix
 void scanAllMacho(void) {
   uint32_t count = _dyld_image_count();
