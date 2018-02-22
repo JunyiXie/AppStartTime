@@ -58,7 +58,7 @@ extern "C"
       from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
       from_didFinshedLaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_didFinshedLaunching_to_first_rendered_time;
 #ifdef DEBUG
-      NSLog(@"AppstartTime 首屏渲染记录");
+      NSLog(@"AppstartTime 首屏渲染记录 \n test_didfinshlaunching_to_first_rendered_time(viewDidAppear) %f \n APPStartTime Log from_didFinshedLaunching_to_first_rendered_time %f \n APPStartTime Log from_load_to_first_rendered_time %f", test_didfinshlaunching_to_first_rendered_time,from_didFinshedLaunching_to_first_rendered_time, from_load_to_first_rendered_time);
 #else
 #endif
       dispatch_suspend(timer);
