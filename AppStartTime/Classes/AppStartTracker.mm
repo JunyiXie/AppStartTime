@@ -24,12 +24,16 @@ extern "C" {
 // rendered_time == after viewDidAppear: time
 CFTimeInterval from_load_to_first_rendered_time;
 CFTimeInterval from_didFinshedLaunching_to_first_rendered_time;
-CFTimeInterval test_didfinshlaunching_to_first_rendered_time;
+CFTimeInterval test_didFinshlaunching_to_first_rendered_time;
 CFTimeInterval from_load_to_didFinshedLaunching_time;
 dispatch_source_t timer;
+
+
+
+start_time_log_t *start_time_log = NULL;
+
+
 #pragma mark CppInitialize Time
-
-
 
 NSMutableArray *cpp_init_infos;
 static NSTimeInterval sSumInitTime;
@@ -48,7 +52,7 @@ extern "C"
 {
   
   void monitorAppStartTime() {
-    test_didfinshlaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
+    test_didFinshlaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
     from_didFinshedLaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent();
     from_load_to_didFinshedLaunching_time = CFAbsoluteTimeGetCurrent() - from_load_to_didFinshedLaunching_time;
 
@@ -58,9 +62,13 @@ extern "C"
       from_load_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_load_to_first_rendered_time;
       from_didFinshedLaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - from_didFinshedLaunching_to_first_rendered_time;
 #ifdef DEBUG
-      NSLog(@"AppstartTime 首屏渲染记录 \n test_didfinshlaunching_to_first_rendered_time(viewDidAppear) %f \n APPStartTime Log from_didFinshedLaunching_to_first_rendered_time %f \n APPStartTime Log from_load_to_first_rendered_time %f", test_didfinshlaunching_to_first_rendered_time,from_didFinshedLaunching_to_first_rendered_time, from_load_to_first_rendered_time);
+      NSLog(@"AppstartTime 首屏渲染记录 \n test_didFinshlaunching_to_first_rendered_time(viewDidAppear) %f \n APPStartTime Log from_didFinshedLaunching_to_first_rendered_time %f \n APPStartTime Log from_load_to_first_rendered_time %f", test_didFinshlaunching_to_first_rendered_time,from_didFinshedLaunching_to_first_rendered_time, from_load_to_first_rendered_time);
 #else
 #endif
+      if (start_time_log){
+        start_time_log(from_load_to_first_rendered_time,from_didFinshedLaunching_to_first_rendered_time,test_didFinshlaunching_to_first_rendered_time,from_load_to_didFinshedLaunching_time,objc_load_infos,cpp_init_infos);
+      }
+      
       dispatch_suspend(timer);
     });
     dispatch_resume(timer);

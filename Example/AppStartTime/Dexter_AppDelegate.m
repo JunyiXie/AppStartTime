@@ -7,6 +7,8 @@
 //
 #import "Dexter_AppDelegate.h"
 #import "AppStartTracker.h"
+extern start_time_log_t* start_time_log;
+
 extern void monitorAppStartTime(void);
 static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
 //  static dispatch_once_t onceToken;
@@ -38,6 +40,7 @@ static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopAc
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
+  start_time_log = startlog;
   monitorAppStartTime();
 
   
@@ -48,6 +51,15 @@ static void YYRunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopAc
 //  });
   
     return YES;
+}
+void startlog(CFTimeInterval from_load_to_first_rendered_time,
+                       CFTimeInterval from_didFinshedLaunching_to_first_rendered_time,
+                       CFTimeInterval test_didFinshlaunching_to_first_rendered_time,
+                       CFTimeInterval from_load_to_didFinshedLaunching_time,
+                       NSMutableArray *objc_load_infos,
+                       NSMutableArray *cpp_init_infos
+                       ) {
+  
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

@@ -42,7 +42,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
-  test_didfinshlaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - test_didfinshlaunching_to_first_rendered_time;
+  test_didFinshlaunching_to_first_rendered_time = CFAbsoluteTimeGetCurrent() - test_didFinshlaunching_to_first_rendered_time;
   NSLog(@"viewDidAppear");
 
 }
@@ -55,7 +55,7 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
   NSLog(@" from_load_to_first_rendered_time %f", from_load_to_first_rendered_time);
-  NSLog(@" test_standard_load_to_first_rendered_time %f", test_didfinshlaunching_to_first_rendered_time);
+  NSLog(@" test_standard_load_to_first_rendered_time %f", test_didFinshlaunching_to_first_rendered_time);
   
   self.view.backgroundColor = [UIColor whiteColor];
 }
