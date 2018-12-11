@@ -1,0 +1,6 @@
+framework module Pods_AppStartTime_Example {
+  umbrella header "Pods-AppStartTime_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}
