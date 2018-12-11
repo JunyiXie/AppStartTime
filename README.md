@@ -5,6 +5,8 @@
 [![License](https://img.shields.io/cocoapods/l/AppStartTime.svg?style=flat)](http://cocoapods.org/pods/AppStartTime)
 [![Platform](https://img.shields.io/cocoapods/p/AppStartTime.svg?style=flat)](http://cocoapods.org/pods/AppStartTime)
 
+首屏渲染完成的时间的基于 runloop 的原理来进行统计的，我们在  didFinsh 中做了一个 dispatch asyn main queue 的操作，根据 Runloop 的源码可以知道，dispatch asyn main queue block 中的事件是在当次 runloop  即将结束的时候执行的，这个时候渲染已经完成，我们基于打断点和多次数据测试验证了这一方案，是非常准确的。
+
 ```
 /// RunLoop的实现
 int CFRunLoopRunSpecific(runloop, modeName, seconds, stopAfterHandle) {
